@@ -1,7 +1,7 @@
 <template>
     <div>
       <ul>
-        <h1 class="titulo animated pulse">TESTE DE INTEGRAÇÃO COM ALURAPAY</h1>
+        <h1 class="titulo animated pulse">INTEGRAÇÃO COM ALURAPAY</h1>
         <table class="tabela">
           <tr>
             <th>ID</th>
