@@ -17,14 +17,18 @@
           </tr>
         </table>
       </ul>
+      <div class="centralizado">
+        <router-link :to="{ name: 'home'}"><Botao rotulo="VOLTAR" tipo="button"/></router-link>
+      </div>
     </div>
 </template>
 
 <script>
     import Linha from "../shared/linha/linha";
+    import Botao from "../shared/botao/Botao";
     export default {
         name: "AluraPay.vue",
-      components: {Linha},
+      components: {Botao, Linha},
       data() {
             return{
               pagamentos:[],
@@ -52,6 +56,10 @@
 </script>
 
 <style scoped>
+  .centralizado{
+    text-align: center;
+  }
+
   .titulo {
     text-align: center;
     font-size: 40px;

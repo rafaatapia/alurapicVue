@@ -3,7 +3,8 @@ import Home from './components/home/Home.vue';
 import AluraPay from './components/alurapay/AluraPay.vue';
 
 export const routes = [
-  {path: '', component: Home, titulo: 'Home'},
-  {path: '/cadastro', component: Cadastro, titulo: 'Cadastro'},
-  {path: '/pagamento', component: AluraPay, titulo: 'Pagamento'}
+  {path: '', name: 'home', component: Home, titulo: 'Home', menu: true},
+  {path: '/cadastro', name: 'cadastro', component: Cadastro, titulo: 'Cadastro', menu: true},
+  {path: '/pagamento', name: 'pagamento', component: AluraPay, titulo: 'Pagamento', menu: true},
+  {path: '*', component: Home, menu: false}
 ];
