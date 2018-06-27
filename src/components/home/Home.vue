@@ -2,31 +2,31 @@
   <div>
     <h1 class="centralizado">{{ titulo }}</h1>
     <p v-show="mensagem" class="centralizado">{{ mensagem }}</p>
-    <input type="search" class="filtro" @input="filtro = $event.target.value" placeholder="filtre por parte do título"/>
+    <input type="search" class="form-control" @input="filtro = $event.target.value" placeholder="filtre por parte do título"/>
+    <br/>
     <ul class="lista-fotos">
       <li class="lista-fotos-item" v-for="foto of fotosComFiltro">
-        <painel :titulo="foto.titulo">
-          <imagem-responsiva v-meu-transform:scale.animacao="1.2" :url="foto.url" :titulo="foto.titulo"></imagem-responsiva>
-          <meu-botao tipo="button" rotulo="REMOVER" @botaoAtivado="remove(foto)" :confirmacao="true" estilo="perigo"/>
-        </painel>
+        <Card :titulo="foto.titulo" :descricao="foto.descricao">
+          <img class="card-img-top img-thumbnail" :src="foto.url" :alt="foto.titulo">
+          <Botao rotulo="REMOVER" estilo="perigo" tipo="" @botaoAtivado="remove(foto)" :confirmacao="true""/>
+          <router-link :to="{name: 'cadastro', params: {id: foto._id}}"><Botao rotulo="ALTERAR" estilo="padrao" tipo=""/></router-link>
+        </Card>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-  import Painel from '../shared/painel/Painel.vue';
-  import ImagemResponsiva from "../shared/imagem-responsiva/ImagemResponsiva";
   import Botao from "../shared/botao/Botao";
   import transform from '../../directives/Transform';
   import FotoService from '../../domain/foto/FotoService'
+  import Card from "../shared/card/Card";
 
   export default {
 
     components: {
-      'meu-botao': Botao,
-      'imagem-responsiva': ImagemResponsiva,
-      painel: Painel
+      Card,
+      Botao,
     },
 
     directives: {
@@ -61,7 +61,6 @@
             this.fotos.splice(indice, 1);
             this.mensagem = 'Foto removida com sucesso'
           }, err => {
-            console.log(err);
             this.mensagem = 'Não foi possível remover a foto';
           });
       }
@@ -71,8 +70,7 @@
       this.service = new FotoService(this.$resource);
 
       this.service.lista()
-        .then(fotos => this.fotos = fotos, err => console.log(err));
-
+        .then(fotos => this.fotos = fotos, err => this.mensagem = err.message);
     }
   }
 </script>

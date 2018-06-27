@@ -3,26 +3,30 @@
   <div>
     <h1 class="centralizado">Cadastro</h1>
     <h2 class="centralizado">{{ foto.titulo }}</h2>
+    <h4 v-if="foto._id" class="centralizado">Alterando</h4>
+    <h4 v-else class="centralizado">Incluindo</h4>
 
     <form @submit.prevent="gravar()">
       <div class="controle">
         <label for="titulo">TÍTULO</label>
-        <input id="titulo" autocomplete="off" v-model="foto.titulo">
+        <input class="form-control" v-validate data-vv-rules="required|min:3|max:30" data-vv-as="título" name="titulo" id="titulo" autocomplete="off" v-model="foto.titulo">
+        <span class="error" v-show="errors.has('titulo')">{{ errors.first('titulo') }}</span>
       </div>
 
       <div class="controle">
         <label for="url">URL</label>
-        <input id="url" autocomplete="off" v-model.lazy="foto.url">
-        <imagem-responsiva v-show="foto.url" :url="foto.url" :titulo="foto.titulo"/>
+        <input class="form-control" v-validate data-vv-rules="required" name="url" id="url" autocomplete="off" v-model.lazy="foto.url">
+        <img :src="foto.url" class="img-thumbnail">
+        <span class="error" v-show="errors.has('url')">{{ errors.first('url') }}</span>
       </div>
 
       <div class="controle">
         <label for="descricao">DESCRIÇÃO</label>
-        <textarea id="descricao" autocomplete="off" v-model="foto.descricao"></textarea>
+        <textarea class="form-control" id="descricao" autocomplete="off" v-model="foto.descricao"></textarea>
       </div>
 
       <div class="centralizado">
-        <meu-botao rotulo="GRAVAR" tipo="submit"/>
+        <meu-botao rotulo="GRAVAR" estilo="gravar" tipo="submit"/>
         <router-link :to="{ name: 'home'}"><meu-botao rotulo="VOLTAR" tipo="button"/></router-link>
       </div>
 
@@ -47,46 +51,37 @@
 
     data(){
       return {
-        foto: new Foto()
+        foto: new Foto(),
+        id: this.$route.params.id
       }
     },
 
     methods: {
       gravar(){
-        this.service.cadastra(this.foto)
-          .then(() => this.foto = new Foto(), err => console.log(err));
+        this.$validator.validateAll().then(success => {
+          if(success){
+            this.service.cadastra(this.foto).then(() => {
+              if(this.id) this.$router.push({name: 'home'});
+              this.foto = new Foto();
+            }, err => console.log(err));
+          }
+        });
+
       }
     },
 
     created() {
       this.service = new FotoService(this.$resource);
+
+      if(this.id){
+        this.service.busca(this.id).then(foto => this.foto = foto);
+      }
+
     }
   }
 
 </script>
-<style scoped>
-
-  .centralizado {
-    text-align: center;
-  }
-  .controle {
-    font-size: 1.2em;
-    margin-bottom: 20px;
-
-  }
-  .controle label {
-    display: block;
-    font-weight: bold;
-  }
-
-  .controle label + input, .controle textarea {
-    width: 100%;
-    font-size: inherit;
-    border-radius: 5px
-  }
-
-  .centralizado {
-    text-align: center;
-  }
+<style scoped lang="scss">
+@import "Cadastro";
 
 </style>

@@ -1,0 +1,29 @@
+$cor: black;
+
+.centralizado {
+  text-align: center;
+  color: $cor;
+}
+.controle {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+
+}
+.controle label {
+  display: block;
+  font-weight: bold;
+}
+
+.controle label + input, .controle textarea {
+  width: 100%;
+  font-size: inherit;
+  border-radius: 5px
+}
+
+.centralizado {
+  text-align: center;
+}
+
+.error{
+  color: red;
+}

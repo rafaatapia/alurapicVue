@@ -20,8 +20,8 @@
 
       methods: {
         disparaAcao() {
-          if(this.confirmacao){
-            if(confirm('Deseja realmente apagar?')){
+          if (this.confirmacao) {
+            if (confirm('Deseja realmente apagar?')) {
               this.$emit('botaoAtivado');
             }
             return;
@@ -31,31 +31,15 @@
       },
 
       computed: {
-        estiloDoBotao(){
-          if(this.estilo == 'padrao' || !this.estilo) return 'botao-padrao';
-          if(this.estilo == 'perigo') return 'botao-perigo';
+        estiloDoBotao() {
+          if (this.estilo == 'padrao' || !this.estilo) return 'btn btn-primary';
+          if (this.estilo == 'perigo') return 'btn btn-danger';
+          if (this.estilo == 'gravar') return 'btn btn-success';
         }
       }
     }
 </script>
 
-<style scoped>
-  .botao {
-    display: inline-block;
-    padding: 10px;
-    border-radius: 3px;
-    margin: 10px;
-    font-size: 1.2em;
-  }
-
-  .botao-perigo {
-    background: firebrick;
-    color: white;
-  }
-
-  .botao-padrao{
-    background: darkcyan;
-    color: white;
-  }
-
+<style scoped lang="scss">
+@import './Botao.scss';
 </style>
